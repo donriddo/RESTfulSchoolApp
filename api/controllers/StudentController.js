@@ -13,7 +13,7 @@ module.exports = {
 					if (err) console.log(err);
 					console.log(student, 'created');
 					req.session.authenticated = true;
-					delete student.password;
+					delete student.password; // deleting the password field off the student object......
 					student.who = 'student';
 					req.session.user = student;
 					res.redirect('/student/' + student.id);
