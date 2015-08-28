@@ -1,5 +1,5 @@
 /**
- * TeacherController
+ * TeachererController
  *
  * @description :: Server-side logic for managing teachers
  * @help        :: See http://links.sailsjs.org/docs/controllers
@@ -7,18 +7,21 @@
 
 module.exports = {
 	create: function (req, res, next) {
-		Teacher.findOneByEmail(req.body.email, function (err, teacher) {
-			if (!teacher) {
-				Teacher.create(req.params.all(), function (err, teacher) {
-					if (err) console.log(err);
-					console.log(teacher, 'created');
-					req.session.authenticated = true;
-					delete teacher.password;
-					teacher.who = 'teacher';
-					req.session.user = teacher;
-					res.redirect('/teacher/' + teacher.id);
+		User.findOneByEmail(req.body.email, function (err, user) {
+			if (!user) {
+				User.create(req.params.all(), function (err, user) {
+					if (err) { console.log(err); return err; }
+					user.accountType = 'teacher';
+					user.save(function (err, user) {
+						if (err) return err;
+						console.log(user, 'created');
+						req.session.authenticated = true;
+						delete user.password;
+						req.session.user = user;
+						res.redirect('/teacher/' + user.id);
+					});
 				});
-			} else if (teacher) {
+			} else if (user) {
 				res.json({err: 'username/email has been chosen'});
 			} else {
 				console.log(err);
@@ -27,35 +30,35 @@ module.exports = {
 
 	},
 	find: function (req, res, next) {
-		Teacher.findOne(req.param('id'), function (err, teacher) {
+		User.findOne(req.param('id'), function (err, user) {
 			if (err) console.log(err);
 			console.log(req.session);
-			res.json(teacher);
+			res.json(user);
 		});
 	},
 	update: function (req, res, next) {
 		if (req.session.user.isAdmin || (req.session.user.id == req.param('id'))) {
-			Teacher.update(req.param('id'), req.params.all(), function (err, teacher) {
+			User.update(req.param('id'), req.params.all(), function (err, user) {
 				if (err) console.log(err);
-				console.log(teacher, 'updated');
-				res.json(teacher);
+				console.log(user, 'updated');
+				res.json(user);
 			});
 		} else {
 			res.send('You are not permitted to edit/update someone else\'s profile');
 		}
 	},
 	destroy: function (req, res, next) {
-		teacher.destroy(req.param('id'), function (err, teacher) {
+		User.destroy(req.param('id'), function (err, user) {
 			if (err) console.log(err);
-			console.log(teacher, 'destroyed');
+			console.log(user, 'destroyed');
 			res.redirect('/teacher');
 		});
 	},
 	index: function (req, res, next) {
-		Teacher.find(function (err, teachers) {
+		User.find(function (err, users) {
 			if (err) console.log(err);
-			console.log(teachers, 'all our teachers');
-			res.json(teachers);
+			console.log(users, 'all our teachers');
+			res.json(users);
 		});
 	}
 

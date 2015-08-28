@@ -57,7 +57,7 @@ module.exports.routes = {
   /***************************************************************************
   |                 Stuents' routes...                                       |
   ***************************************************************************/
-  'post /student/create': {
+  'post /student': {
     controller: 'StudentController',
     action: 'create'
   },
@@ -65,11 +65,11 @@ module.exports.routes = {
     controller: 'StudentController',
     action: 'find'
   },
-  'put /student/update/:id': {
+  'put /student/:id': {
     controller: 'StudentController',
     action: 'update'
   },
-  'delete /student/destroy/:id': {
+  'delete /student/:id': {
     controller: 'StudentController',
     action: 'destroy'
   },
@@ -82,7 +82,7 @@ module.exports.routes = {
   /***************************************************************************
   |                 Teachers' routes...                                      |
   ***************************************************************************/
-  'post /teacher/create': {
+  'post /teacher': {
     controller: 'TeacherController',
     action: 'create'
   },
@@ -90,11 +90,11 @@ module.exports.routes = {
     controller: 'TeacherController',
     action: 'find'
   },
-  'put /teacher/update/:id': {
+  'put /teacher/:id': {
     controller: 'TeacherController',
     action: 'update'
   },
-  'delete /teacher/destroy/:id': {
+  'delete /teacher/:id': {
     controller: 'TeacherController',
     action: 'destroy'
   },
